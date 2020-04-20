@@ -56,6 +56,7 @@ const downloadRecord = (name, message) => {
     });
     file.on('finish', function() {
         file.close();
+        message.channel.send("Skill.");
     });
 }
 
