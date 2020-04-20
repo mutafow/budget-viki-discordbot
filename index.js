@@ -49,6 +49,7 @@ const addRecord = (name, message) => {
 }
 
 const downloadRecord = (name, message) => {
+    ensureDirectoryExistence(`${RECORDS_FOLD}`);
     const it = message.attachments.values();
     const file = fs.createWriteStream(`${RECORDS_FOLD}${name}.mp3`);
     const request = https.get(it.next().value.url, function(response) {
@@ -134,4 +135,13 @@ const getDirs = () => {
 
 const getNameFromDir = dir => {
     return dir.split('\\').slice(-1)[0].split('.')[0];
+}
+
+const ensureDirectoryExistence = (filePath) => {
+    let dirname = path.dirname(filePath);
+    if (fs.existsSync(dirname)) {
+      return true;
+    }
+    ensureDirectoryExistence(dirname);
+    fs.mkdirSync(dirname);
 }
