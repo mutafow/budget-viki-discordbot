@@ -60,31 +60,36 @@ client.on('message', async message => {
             message.channel.send(listRecords());
             break;
         case 'bind': 
-            bindReaction(content);
+            bindReaction(message);
             break;
         case 'unbind': 
-            unbindReaction(content);
+            unbindReaction(message);
             break;
+        break;
         default:
             message.channel.send('Kakvo mi govorish?');
             break;
     }
 })
 
-const bindReaction = (content) => {
+const bindReaction = (message) => {
+    const {content} = message;
 	let emoji = content[2];
 	reactions[emoji] = content[3];
 	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
 		console.log(`added ${emoji}`);
-	});
+    });
+    message.react(':ok_hand:');
 }
 
-const unbindReaction = (content) => {
+const unbindReaction = (message) => {
+    const {content} = message;
 	let emoji = content[2];
 	delete reactions[emoji];
 	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
 		console.log(`deleted ${emoji}`);
-	});
+    });
+    message.react(':ok_hand:');
 }
 
 const addRecord = (name, message) => {
@@ -151,8 +156,11 @@ const listRecords = () => {
 
     const embed = new Discord.MessageEmbed()
         .setColor('#0099ff')
+        .setImage('https://cdn.discordapp.com/app-icons/701873228880281632/1bbbe91aac7d0e7a664a8d51a0e635cb.png?size=256')
         .setTitle('Frazi:')
-        .setDescription(mappedDirs);
+        .setDescription(mappedDirs)
+        .setFooter('Bati tupiq app', 'https://cdn.discordapp.com/app-icons/701873228880281632/1bbbe91aac7d0e7a664a8d51a0e635cb.png?size=256')
+        ;
 
     return embed;
 }
