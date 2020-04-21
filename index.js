@@ -65,6 +65,12 @@ client.on('message', async message => {
         case 'unbind': 
             unbindReaction(content);
             break;
+        case "emojilist":
+            const e = message.guild.emojis.cache.find(emoji => emoji.name === 'papaLUL');
+            console.log(e.url);
+            message.channel.send(e.url);
+            message.channel.send()
+        break;
         default:
             message.channel.send('Kakvo mi govorish?');
             break;
@@ -141,10 +147,14 @@ const listRecords = () => {
     const dirs = getDirs();
     const flippedReacts = objectFlip(reactions);
 
+    console.log(flippedReacts);
 
     const mappedDirs = dirs.map( (dir, i) => {
-        const emoji = flippedReacts[dir]
-        return `${i}. ${getNameFromDir(dir)} (${emoji})\n`;
+        const name = getNameFromDir(dir);
+        const emoji = flippedReacts[name] || '-';
+
+        console.log(name, emoji);
+        return `${i}. ${name} (${emoji})\n`;
     });
 
     const embed = new Discord.MessageEmbed()
