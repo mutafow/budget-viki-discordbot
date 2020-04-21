@@ -60,10 +60,10 @@ client.on('message', async message => {
             message.channel.send(listRecords());
             break;
         case 'bind': 
-            bindReaction(message, content);
+            await bindReaction(message, content);
             break;
         case 'unbind': 
-            unbindReaction(message, content);
+            await unbindReaction(message, content);
             break;
         break;
         default:
@@ -72,22 +72,22 @@ client.on('message', async message => {
     }
 })
 
-const bindReaction = (message, content) => {
+const bindReaction = async (message, content) => {
 	let emoji = content[2];
 	reactions[emoji] = content[3];
 	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
 		console.log(`added ${emoji}`);
     });
-    message.react(':ok_hand:');
+    await message.react('👌');
 }
 
-const unbindReaction = (message, content) => {
+const unbindReaction = async (message, content) => {
 	let emoji = content[2];
 	delete reactions[emoji];
 	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
 		console.log(`deleted ${emoji}`);
     });
-    message.react(':ok_hand:');
+    await message.react('👌');
 }
 
 const addRecord = (name, message) => {
