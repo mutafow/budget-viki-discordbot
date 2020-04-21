@@ -65,11 +65,6 @@ client.on('message', async message => {
         case 'unbind': 
             unbindReaction(content);
             break;
-        case "emojilist":
-            const e = message.guild.emojis.cache.find(emoji => emoji.name === 'papaLUL');
-            console.log(e.url);
-            message.channel.send(e.url);
-            message.channel.send()
         break;
         default:
             message.channel.send('Kakvo mi govorish?');
@@ -138,8 +133,6 @@ const playRecord = async (name, message) => {
         dispatcher.on('error', error => {
             console.log(error)
         });
-      } else {
-        message.channel.send('You need to join a voice channel first!');
       }
 }
 
