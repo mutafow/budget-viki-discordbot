@@ -23,8 +23,8 @@ client.on('message', async message => {
 	.then(collected => {
 		const reaction = collected.first();
 
-		if (reaction.emoji.name === '701961417372205076') {
-			message.reply('!viki play noThanks');
+		if (reaction.emoji.name === '701961417372205076')
+			message.reply('!viki play noThanks')
 		else
 			message.reply(reaction.emoji.name);
 	})
