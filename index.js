@@ -16,7 +16,6 @@ client.on('message', async message => {
     if (!message.guild) return;
 
     const content = message.content.split(' ');
-    
 	const filter = (reaction, user) => {
 		return reaction != null && reactions[reaction.emoji.id] !== undefined;
 	};
@@ -52,7 +51,6 @@ client.on('message', async message => {
             break;
     }
 })
-
 
 const bindReaction = (content) => {
 	let regex = /:([0-9]+)>/
