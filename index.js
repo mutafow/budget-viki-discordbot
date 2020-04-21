@@ -14,10 +14,10 @@ client.login(token);
 client.once('ready', () => console.log('ready'));
 
 const determineName = (reaction) => {
-	if (reaction.emoji.id == 'null')
-		return `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
-	else
+	if (reaction.emoji.id == null)
 		return reaction.emoji.name;
+	else
+		return `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
 };
 
 const filter = (reaction, user) => {
@@ -35,6 +35,7 @@ client.on('message', async message => {
 	.then(collected => {
 		const reaction = collected.first();
 		let reactionName = determineName(reaction);
+		console.log(reactionName);
 		if (reaction) 
 			playRecord(reactions[reactionName], message);
 	})
