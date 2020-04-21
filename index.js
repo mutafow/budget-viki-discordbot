@@ -65,7 +65,9 @@ client.on('message', async message => {
         case 'unbind': 
             await unbindReaction(message, content);
             break;
-        break;
+        case 'json':
+            message.channel.send(`\`\`\`json\n${JSON.stringify(reactions, null, 2)}\`\`\``);
+            break;
         default:
             message.channel.send('Kakvo mi govorish?');
             break;
@@ -179,4 +181,4 @@ const objectFlip = (obj) => {
       ret[ value ] = key;
       return ret;
     }, {});
-  }
+}
