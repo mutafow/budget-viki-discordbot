@@ -138,8 +138,13 @@ const playRecord = async (name, message) => {
 
 const listRecords = () => {
     const dirs = getDirs();
+    const flippedReacts = objectFlip(reactions);
 
-    const mappedDirs = dirs.map( (dir, i) => `${i}. ${getNameFromDir(dir)}\n`);
+
+    const mappedDirs = dirs.map( (dir, i) => {
+        const emoji = flippedReacts[dir]
+        return `${i}. ${getNameFromDir(dir)} (${emoji})\n`;
+    });
 
     const embed = new Discord.MessageEmbed()
         .setColor('#0099ff')
@@ -157,3 +162,11 @@ const getDirs = () => {
 const getNameFromDir = dir => {
     return dir.split('\\').slice(-1)[0].split('/').slice(-1)[0].split('.')[0]; // NAI LUDIQ RED MAIKO
 }
+
+const objectFlip = (obj) => {
+    return Object.entries(obj).reduce((ret, entry) => {
+      const [ key, value ] = entry;
+      ret[ value ] = key;
+      return ret;
+    }, {});
+  }
