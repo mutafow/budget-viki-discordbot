@@ -78,7 +78,7 @@ const bindReaction = (content) => {
 	});
 }
 
-const bindReaction = (content) => {
+const unbindReaction = (content) => {
 	let emoji = content[2];
 	delete reactions[emoji];
 	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
