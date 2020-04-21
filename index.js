@@ -14,19 +14,15 @@ client.on('message', async message => {
     if (!message.guild) return;
 
     const content = message.content.split(' ');
-    
 	const filter = (reaction, user) => {
-	return ['701961417372205076'].includes(reaction.emoji.name) && user.id === message.author.id;
+		return ['nothx'].includes(reaction.emoji.name);
 	};
 
 	message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 	.then(collected => {
 		const reaction = collected.first();
-
-		if (reaction.emoji.name === '701961417372205076')
-			message.reply('!viki play noThanks')
-		else
-			message.reply(reaction.emoji.name);
+		if (reaction && reaction.emoji.name === 'nothx') 
+			playRecord('noThanks', message);
 	})
 	
     if(content[0] !== `${prefix}viki`) {
