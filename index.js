@@ -65,7 +65,6 @@ client.on('message', async message => {
         case 'unbind': 
             unbindReaction(content);
             break;
-        break;
         default:
             message.channel.send('Kakvo mi govorish?');
             break;
