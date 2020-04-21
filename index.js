@@ -142,8 +142,6 @@ const listRecords = () => {
     const dirs = getDirs();
     const flippedReacts = objectFlip(reactions);
 
-    console.log(flippedReacts);
-
     const mappedDirs = dirs.map( (dir, i) => {
         const name = getNameFromDir(dir);
         const emoji = flippedReacts[name] || '-';
@@ -171,7 +169,8 @@ const getDirs = () => {
 }
 
 const getNameFromDir = dir => {
-    return dir.split('\\').slice(-1)[0].split('/').slice(-1)[0].split('.')[0]; // NAI LUDIQ RED MAIKO
+    return dir.match(/.+[\/\\](.+?)\.mp3/)[1];
+    // return dir.split('\\').slice(-1)[0].split('/').slice(-1)[0].split('.')[0]; // NAI LUDIQ RED MAIKO
 }
 
 const objectFlip = (obj) => {
