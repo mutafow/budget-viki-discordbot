@@ -149,14 +149,16 @@ const listRecords = () => {
         const emoji = flippedReacts[name] || '-';
 
         console.log(name, emoji);
-        return `${i}. ${name} (${emoji})\n`;
+        return {name, value: `Binded to: ${emoji}`}
+        // return `${i}. ${name} (${emoji})\n`;
     });
 
     const embed = new Discord.MessageEmbed()
         .setColor('#0099ff')
-        .setImage('https://cdn.discordapp.com/app-icons/701873228880281632/1bbbe91aac7d0e7a664a8d51a0e635cb.png?size=256')
-        .setTitle('Frazi:')
-        .setDescription(mappedDirs)
+        .setThumbnail('https://cdn.discordapp.com/app-icons/701873228880281632/1bbbe91aac7d0e7a664a8d51a0e635cb.png?size=256')
+        .setTitle('Frazi')
+        // .setDescription(mappedDirs)
+        .addFields(mappedDirs)
         .setFooter('Bati tupiq app', 'https://cdn.discordapp.com/app-icons/701873228880281632/1bbbe91aac7d0e7a664a8d51a0e635cb.png?size=256')
         ;
 
