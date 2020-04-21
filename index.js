@@ -5,6 +5,8 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const RECORDS_FOLD = require("path").join(__dirname, `/records/`);
+let reactionsFile = fs.readFileSync("./reactions.json");
+let reactions = JSON.parse(reactionsFile);
 
 client.login(token);
 
@@ -16,17 +18,14 @@ client.on('message', async message => {
     const content = message.content.split(' ');
     
 	const filter = (reaction, user) => {
-	return ['701961417372205076'].includes(reaction.emoji.name) && user.id === message.author.id;
+		return reaction != null && reactions[reaction.emoji.id] !== undefined;
 	};
 
 	message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 	.then(collected => {
 		const reaction = collected.first();
-
-		if (reaction.emoji.name === '701961417372205076') {
-			message.reply('!viki play noThanks');
-		else
-			message.reply(reaction.emoji.name);
+		if (reaction) 
+			playRecord(reactions[reaction.emoji.id], message);
 	})
 	
     if(content[0] !== `${prefix}viki`) {
@@ -45,29 +44,24 @@ client.on('message', async message => {
         case 'list': 
             message.channel.send(listRecords());
             break;
+        case 'bind': 
+            bindReaction(content);
+            break;
         default:
             message.channel.send('Kakvo mi govorish?');
             break;
     }
 })
 
-client.on('messageReactionAdd', async (reaction, user) => {
-	// When we receive a reaction we check if the reaction is partial or not
-	if (reaction.partial) {
-		// If the message this reaction belongs to was removed the fetching might result in an API error, which we need to handle
-		try {
-			await reaction.fetch();
-		} catch (error) {
-			console.log('Something went wrong when fetching the message: ', error);
-			// Return as `reaction.message.author` may be undefined/null
-			return;
-		}
-	}
-	// Now the message has been cached and is fully available
-	message.channel.send(`${reaction.message.author}'s message "${reaction.message.content}" gained a reaction!`);
-	// The reaction is now also fully available and the properties will be reflected accurately:
-	message.channel.send(`${reaction.count} user(s) have given the same reaction to this message!`);
-});
+
+const bindReaction = (content) => {
+	let regex = /:([0-9]+)>/
+	let emoji = content[2].match(regex)[1];
+	reactions[emoji] = content[3];
+	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
+		console.log("updated reactions");
+	});
+}
 
 const addRecord = (name, message) => {
     if(name === undefined || name === null || name === '') {
