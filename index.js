@@ -33,7 +33,7 @@ client.on('message', async message => {
             message.channel.send(listRecords());
             break;
         default:
-            message.channel.send('Samo luck.');
+            message.channel.send('Kakvo mi govorish?');
             break;
     }
 })
@@ -65,22 +65,8 @@ const playRecord = async (name, message) => {
         let file = `${RECORDS_FOLD}${name}.mp3`;
         
         if (!fs.existsSync(file)) {
-            console.log(name, isNaN(name));
-            if(isNaN(name)) {
-                message.channel.send('Samo skill e da ocelish imeto');
-                return;
-            } 
-            else {
-                const dirs = getDirs();
-                const index = parseInt(name);
-                if(dirs.length <= index || index < 0) {
-                    message.channel.send('Samo skill e da ocelish imeto');
-                    return;
-                }
-                else {
-                    file = `${RECORDS_FOLD}${getNameFromDir(dirs[index])}.mp3`
-                }
-            }
+            message.channel.send('Samo skill e da ocelish imeto');
+            return;
         }
         const connection = await message.member.voice.channel.join();
         const dispatcher = connection.play(file, {volume: 1});
@@ -133,5 +119,5 @@ const getDirs = () => {
 }
 
 const getNameFromDir = dir => {
-    return dir.split('\\').slice(-1)[0].split('.')[0];
+    return dir.split('\\').slice(-1)[0].split('/').slice(-1)[0].split('.')[0]; // NAI LUDIQ RED MAIKO
 }
