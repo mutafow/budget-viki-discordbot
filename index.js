@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const dotenv = require("dotenv").config();
 const {prefix, token} = process.env;
 const client = new Discord.Client();
 const https = require('https');
@@ -12,20 +13,34 @@ client.login(token);
 
 client.once('ready', () => console.log('ready'));
 
+const determineName = (reaction) => {
+	if (reaction.emoji.id == 'null')
+		return `<:${reaction.emoji.name}:${reaction.emoji.id}>`;
+	else
+		return reaction.emoji.name;
+};
+
+const filter = (reaction, user) => {
+	let reactionName = determineName(reaction);
+	console.log("received: " + reactionName);
+	return reaction != null && reactions[reactionName] !== undefined;
+};
+
 client.on('message', async message => {
     if (!message.guild) return;
 
     const content = message.content.split(' ');
-	const filter = (reaction, user) => {
-		return reaction != null && reactions[reaction.emoji.id] !== undefined;
-	};
 
 	message.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
 	.then(collected => {
 		const reaction = collected.first();
+		let reactionName = determineName(reaction);
 		if (reaction) 
-			playRecord(reactions[reaction.emoji.id], message);
+			playRecord(reactions[reactionName], message);
 	})
+	.catch(collected => {
+		console.log('received unknown reaction');
+	});
 	
     if(content[0] !== `${prefix}viki`) {
         return;
@@ -46,6 +61,9 @@ client.on('message', async message => {
         case 'bind': 
             bindReaction(content);
             break;
+        case 'unbind': 
+            unbindReaction(content);
+            break;
         default:
             message.channel.send('Kakvo mi govorish?');
             break;
@@ -53,11 +71,18 @@ client.on('message', async message => {
 })
 
 const bindReaction = (content) => {
-	let regex = /:([0-9]+)>/
-	let emoji = content[2].match(regex)[1];
+	let emoji = content[2];
 	reactions[emoji] = content[3];
 	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
-		console.log("updated reactions");
+		console.log(`added ${emoji}`);
+	});
+}
+
+const bindReaction = (content) => {
+	let emoji = content[2];
+	delete reactions[emoji];
+	fs.writeFile('reactions.json', JSON.stringify(reactions), function(error) {
+		console.log(`deleted ${emoji}`);
 	});
 }
 
