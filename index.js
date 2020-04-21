@@ -28,9 +28,6 @@ client.on('message', async message => {
         case 'play':
             await playRecord(name, message);
             break;
-        case 'random':
-            await playRandom(message);
-            break;
         case 'list': 
             message.channel.send(listRecords());
             break;
@@ -61,6 +58,11 @@ client.on('messageReactionAdd', async (reaction, user) => {
 const addRecord = (name, message) => {
     if(name === undefined || name === null || name === '') {
         message.channel.send('Ne sum dostatuchno lucknal da si izmislqm sam imena.');
+        return;
+    }
+    if(message.attachments === null || message.attachments === undefined) {
+        message.channel.send('Dai mi fail, a?');
+        return;
     }
     downloadRecord(name, message);
 }
@@ -101,20 +103,6 @@ const playRecord = async (name, message) => {
       } else {
         message.channel.send('You need to join a voice channel first!');
       }
-}
-
-const playRandom = async message => {
-    const dirs = getDirs();
-
-    // New random list of dirs
-    const randomList = dirs.slice(0)
-        .map((e) => { return Math.random() < .5 ? e : null; })
-        .filter((e) => { return e != null; });
-    
-    const index = Math.floor(Math.random() * randomList.length);
-    const name = getNameFromDir(randomList[index]);
-    console.log(name);
-    await playRecord(name, message);
 }
 
 const listRecords = () => {
