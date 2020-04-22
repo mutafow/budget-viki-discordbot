@@ -12,22 +12,14 @@ const filter = (reaction, user) => {
     return user.id !== BOT_ID;
 };
 
-const bindReactionListener = message => {
-    message.awaitReactions(filter, { max: 1, time: 60 * 60 * 4 * 1000, errors: ['time'] })
-        .then(async collected => {
-            const collectedReact = collected.first();
-            const reaction = parseName(collectedReact);
-            const result = await Recording.findOne({reaction});
-            if(result !== null) {
-                await playRecording(message, result.url);
-            } else {
-                console.log('error');
-            }
-        })
-        .catch(collected => {
-            console.log(collected);
-            message.react('💤')
-        });
+const reactionListener = async (react, user) => {
+    const reaction = parseName(react);
+    const result = await Recording.findOne({reaction});
+    if(result !== null) {
+        await playRecording(react.message, result.url);
+    } else {
+        console.log('error');
+    }
 }
 
-module.exports = {bindReactionListener, parseName, filter};
+module.exports = {reactionListener, parseName, filter};

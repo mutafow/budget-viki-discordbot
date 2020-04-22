@@ -6,7 +6,7 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const { bindReactionListener } = require('./actions/reaction-listener');
+const { reactionListener } = require('./actions/reaction-listener');
 const { reacts } = require('./config/config.json');
 
 for (const file of commandFiles) {
@@ -31,11 +31,10 @@ client.login(token);
 
 client.once('ready', () => console.log('Connected to Discord API.'));
 
+client.on('messageReactionAdd', async (react, user) => { await reactionListener(react, user) });
 
 client.on('message', async message => {
-     
-    bindReactionListener(message);
-    
+
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
