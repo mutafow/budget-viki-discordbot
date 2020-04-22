@@ -6,7 +6,8 @@ const client = new Discord.Client();
 client.commands = new Discord.Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const {bindReactionListener} = require('./actions/reaction-listener');
+const { bindReactionListener } = require('./actions/reaction-listener');
+const { reacts } = require('./config/config.json');
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -40,7 +41,10 @@ client.on('message', async message => {
 	const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
     
-    if (!client.commands.has(command)) return;
+    if (!client.commands.has(command)) {
+        await message.react(reacts.error);
+        return;
+    }
 
     try {
         client.commands.get(command).execute(message, args);
