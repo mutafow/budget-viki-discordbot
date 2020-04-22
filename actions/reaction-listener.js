@@ -21,7 +21,7 @@ const bindReactionListener = message => {
             if(result !== null) {
                 await playRecording(message, result.url);
             } else {
-                message.react(reacts.error);
+                console.log('error');
             }
         })
         .catch(collected => {
