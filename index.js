@@ -149,7 +149,7 @@ const listRecords = () => {
         const emoji = flippedReacts[name] || '-';
 
         console.log(name, emoji);
-        return {name, value: `Binded to: ${emoji}`}
+        return {name, value: `Bound to: ${emoji}`}
         // return `${i}. ${name} (${emoji})\n`;
     });
 
