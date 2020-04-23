@@ -5,6 +5,7 @@ const playRecording = require('../actions/play');
 module.exports = {
 	name: 'play',
 	description: 'Plays a recording from the database!',
+	arguments: '<name>',
 	execute: async (message, args) => {
         const [name] = args;
         const recording = await Recording.findOne({name});

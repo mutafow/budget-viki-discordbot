@@ -4,6 +4,7 @@ const Recording = require('../models/recording');
 module.exports = {
 	name: 'list',
 	description: 'Displays a list of current recordings.',
+	arguments: '',
 	execute: async (message, args) => {
         const recordings = await Recording.find({});
         const recordingFields = recordings.map(rec => {return {name: rec.name, value: `React: ${rec.reaction === null ? '-' : rec.reaction} | [Download audio](${rec.url})` } })

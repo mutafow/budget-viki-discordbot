@@ -4,6 +4,7 @@ const { reacts } = require('../config/config.json');
 module.exports = {
 	name: 'add',
 	description: 'Adds a recording to the database.',
+	arguments: '<name> [<reaction>] and attachment',
 	execute: async (message, args) => {
         const { url } = message.attachments.values().next().value;
         const [name, reaction] = args;
