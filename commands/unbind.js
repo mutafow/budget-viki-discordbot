@@ -3,7 +3,7 @@ const { reacts } = require('../config/config.json');
 
 module.exports = {
 	name: 'unbind',
-    description: 'Unbinds an emoji to a recording.',
+    description: 'Unbinds emoji from recording.',
 	arguments: '<recording>',
     execute: async (message, args) => {
         const [name] = args;
