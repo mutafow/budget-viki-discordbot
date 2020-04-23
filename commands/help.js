@@ -9,7 +9,7 @@ module.exports = {
 	arguments: '',
 	execute: async (message, args) => {
         const commands = commander.list();
-		const commandsFields = commands.map(rec => {return {name: rec.name, value: `${rec.description} ${rec.arguments}`} })
+		const commandsFields = commands.map(rec => {return {name: `${rec.name} ${rec.arguments}`, value: `${rec.description}`} })
         const embed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Help')
