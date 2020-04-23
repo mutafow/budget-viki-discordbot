@@ -12,11 +12,19 @@ const filter = (reaction, user) => {
     return user.id !== BOT_ID;
 };
 
+const routeChannel = (react, user) => {
+	if (react.message.member.voice.channel)
+		return react.message;
+	else if (user.presence.member.voice.channel)
+		return user.presence;
+};
+
 const reactionListener = async (react, user) => {
     const reaction = parseName(react);
     const result = await Recording.findOne({reaction});
     if(result !== null) {
-        await playRecording(react.message, result.url);
+		const destination = routeChannel(react, user);
+        await playRecording(destination, result.url);
     } else {
         console.log('error');
     }
