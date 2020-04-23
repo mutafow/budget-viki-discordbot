@@ -41,7 +41,7 @@ client.on('message', async message => {
 
 	const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
-    
+
     if (!client.commands.has(command)) {
         await message.react(reacts.error);
         return;

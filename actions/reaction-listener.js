@@ -15,7 +15,7 @@ const filter = (reaction, user) => {
 const routeChannel = (react, user) => {
 	if (react.message.member.voice.channel)
 		return react.message;
-	else if (user.presence.member.voice.channel)
+	else
 		return user.presence;
 };
 

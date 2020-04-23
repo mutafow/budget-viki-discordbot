@@ -1,13 +1,14 @@
 const Recording = require('../models/recording');
 const { reacts } = require('../config/config.json');
 const commander = require('../util/commands_export');
+const Discord = require("discord.js");
 
 module.exports = {
 	name: 'help',
     description: 'Displays help with bot\'s commands',
 	execute: async (message, args) => {
         const commands = commander.list();
-		const commandsFields = commands.map(rec => {return {name: rec.name, value: `Command: ${rec.description}`} })
+		const commandsFields = commands.map(rec => {return {name: rec.name, value: `${rec.description}`} })
         const embed = new Discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Help')
